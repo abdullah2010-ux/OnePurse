@@ -1,0 +1,6 @@
+{
+  "name": "OnePurse — Entrusted Money & Task Ledger",
+  "description": "Keep all entrusted money in one place while effortlessly tracking how much each person sent, what you spent on their tasks, and how much money each person has left.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
