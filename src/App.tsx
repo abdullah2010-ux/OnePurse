@@ -32,8 +32,12 @@ const LEGACY_KEYS = [
   'onepurse_auth_session_v1',
 ];
 
+const DEVICE_PEOPLE_KEY = 'onepurse_device_people_v1';
+const DEVICE_TX_KEY = 'onepurse_device_transactions_v1';
+const DEVICE_CURRENCY_KEY = 'onepurse_device_currency_v1';
+
 export default function App() {
-  // Ensure any previously stored browser data is cleared so opening or reopening starts completely fresh
+  // Clean up old legacy keys once
   useEffect(() => {
     try {
       for (const key of LEGACY_KEYS) {
@@ -44,9 +48,63 @@ export default function App() {
     }
   }, []);
 
-  const [people, setPeople] = useState<PersonAccount[]>([]);
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [currency, setCurrency] = useState<string>('$');
+  const [people, setPeople] = useState<PersonAccount[]>(() => {
+    try {
+      const saved = localStorage.getItem(DEVICE_PEOPLE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) return parsed;
+      }
+    } catch {
+      // ignore storage errors
+    }
+    return [];
+  });
+
+  const [transactions, setTransactions] = useState<Transaction[]>(() => {
+    try {
+      const saved = localStorage.getItem(DEVICE_TX_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) return parsed;
+      }
+    } catch {
+      // ignore storage errors
+    }
+    return [];
+  });
+
+  const [currency, setCurrency] = useState<string>(() => {
+    try {
+      return localStorage.getItem(DEVICE_CURRENCY_KEY) || '$';
+    } catch {
+      return '$';
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(DEVICE_PEOPLE_KEY, JSON.stringify(people));
+    } catch {
+      // ignore storage errors
+    }
+  }, [people]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(DEVICE_TX_KEY, JSON.stringify(transactions));
+    } catch {
+      // ignore storage errors
+    }
+  }, [transactions]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(DEVICE_CURRENCY_KEY, currency);
+    } catch {
+      // ignore storage errors
+    }
+  }, [currency]);
 
   const [activeTab, setActiveTab] = useState<ActiveTab>('people');
   const [statusFilter, setStatusFilter] = useState<

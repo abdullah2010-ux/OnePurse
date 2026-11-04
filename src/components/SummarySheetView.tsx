@@ -183,7 +183,7 @@ export const SummarySheetView: React.FC<SummarySheetViewProps> = ({
             {/* Data Management Controls */}
             <div className="mt-8 pt-6 border-t border-stone-200 flex flex-wrap items-center justify-between gap-4 text-xs text-stone-600">
               <div>
-                You can print or copy this summary sheet, or clear all records at any time.
+                All entries are automatically saved on this device across browser refreshes.
               </div>
 
               <div className="flex flex-wrap items-center gap-3">
